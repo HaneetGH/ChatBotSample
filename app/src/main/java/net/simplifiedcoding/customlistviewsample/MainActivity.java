@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     //Model[] Model = new Model[100];
     ArrayList<Mode> myLibrary = new ArrayList<>();
     ArrayList<Mode> ArrRecever = new ArrayList<>();
+    ArrayList<Mode> ArrReceverForAnswers = new ArrayList<>();
     CustomList customList;
     //MessageType mt;
 
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         headdbclass db = new headdbclass(getApplicationContext());
 
         ArrRecever = db.FetchBasicQuestion();
+        //ArrReceverForAnswers = db.FetchBasicQuestionAnswer();
         Log.d("Type", "2");
 
         Log.d("Type", "3");
@@ -134,9 +136,26 @@ public void delaycall()
 
                 delaycall();
             }
-        }, 5000);
+        }, 1000);
 
 
+
+    }
+    else
+    {
+        /*handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                myLibrary.add(ArrRecever.get(i));
+
+                customList.notifyDataSetChanged();
+
+                i++;
+                time = time + 5000;
+
+                //delaycall();
+            }
+        }, 2000);*/
 
     }
     //GetQuestionAnswerOption();

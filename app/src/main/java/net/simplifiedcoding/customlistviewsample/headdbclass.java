@@ -24,6 +24,7 @@ public class headdbclass extends SQLiteOpenHelper {
 	public static final String sher_table_Name = "table_sher";
 	public static final String sher_table_fav = "fav";
 	public static final String sher_table_most = "most";
+	public static final String QAE = "QAE";
 	// String question=null;
 	private HashMap hp;
 	ContentValues contentValues;
@@ -184,7 +185,7 @@ public class headdbclass extends SQLiteOpenHelper {
 		}
 		while (res.isAfterLast() == false) {
 			Log.d("question",res.getString(res.getColumnIndex("Question")));
-			BaseQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Answer_Option")), e, R.drawable.cnc, 1, "", AnswerType.Image));
+			BaseQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc, Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image));
 			res.moveToNext();
 
 
@@ -201,19 +202,57 @@ public class headdbclass extends SQLiteOpenHelper {
 	}
 
 	MessageType e;
-	public ArrayList<Mode> FetchBasicQuestionAnswer() {
-		// TODO Auto-generated method stub
-		ArrayList<Mode> BaseQuestionArray = new ArrayList<Mode>();
+
+
+
+	public ArrayList<String> FetchNextQuestionId(int questionId, String s) {
+
+
+		ArrayList<String> NextQuestionArray = new ArrayList<String>();
 		//List<String> listDatafav = new ArrayList<String>();
 		// hp = new HashMap();
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where `Question_id`='0'", null);
+		Log.d("what", questionId+" " +s);
+
+		Cursor res = db.rawQuery("SELECT * FROM Answer_Reply Where Question_id = "+questionId+" AND Answer = '"+s+"'", null);
+
+		//SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
 		res.moveToFirst();
 		while (res.isAfterLast() == false) {
-			Log.d("question", res.getString(res.getColumnIndex("Question")));
+			Log.d("question", res.getString(res.getColumnIndex("ansString")));
 
 
-			BaseQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Answer_Option")),e,R.drawable.cnc,1,"",AnswerType.Image));
+			NextQuestionArray.add(res.getString(res.getColumnIndex("ansString")));
+			NextQuestionArray.add(res.getString(res.getColumnIndex("Next_Qid")));
+			res.moveToNext();
+
+
+
+
+		}
+		return NextQuestionArray;
+
+	}
+
+	public ArrayList<Mode> FetchNextQuestionFromBaseTable(String qid) {
+
+		ArrayList<Mode> NextQuestionArray = new ArrayList<Mode>();
+
+
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Log.d("question_id", qid+"");
+		Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where Question_id = "+qid+"", null);
+
+		//SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
+		res.moveToFirst();
+		if(res.getString(res.getColumnIndex("Question_Type")).equalsIgnoreCase("text"))
+		{
+			e=MessageType.Text;
+		}
+		while (res.isAfterLast() == false) {
+			Log.d("question_id", res.getString(res.getColumnIndex("Question_id")));
+			NextQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc,Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image));
 			res.moveToNext();
 
 
@@ -221,35 +260,7 @@ public class headdbclass extends SQLiteOpenHelper {
 
 		}
 
-
-		//myLibrary.add(new Mode("Do you Like To Eat", MessageType.Text, R.drawable.cnc));
-		return BaseQuestionArray;
-
-
-
+		Log.d("size", NextQuestionArray.size()+" ");
+		return NextQuestionArray;
 	}
-
-
-
-
-	
-
-
-	
-
-
-
-
-	
-
-
-
-	
-
-	
-
-	
-	
-	
-
 }

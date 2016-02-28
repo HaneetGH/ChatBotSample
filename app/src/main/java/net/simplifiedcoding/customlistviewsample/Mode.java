@@ -15,6 +15,7 @@ public class Mode {
     AnswerType answerType;
 
     int fdraw;
+   // int QAE = -1;
     // DateTime LastReceive;
     MessageType Type;
 
@@ -31,6 +32,7 @@ public class Mode {
         fdraw = draw;
 
         Type = qType;
+       // QAE = qae;
 
     }
 
