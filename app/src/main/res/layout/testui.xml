@@ -14,7 +14,7 @@
         android:id="@+id/idfortext"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="#87CEFA"
+        android:background="@drawable/out_message_bg"
         android:gravity="center"
         android:text="123"
         android:textStyle="bold" />
