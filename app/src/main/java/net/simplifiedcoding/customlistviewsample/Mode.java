@@ -13,13 +13,14 @@ public class Mode {
     String answerOption;
 
     AnswerType answerType;
-
+String answerSelected;
     int fdraw;
-   // int QAE = -1;
+    // int QAE = -1;
     // DateTime LastReceive;
     MessageType Type;
 
-    public Mode(String s, MessageType qType, int draw, int qid, String aOption, AnswerType aType) {
+    public Mode(String s, MessageType qType, int draw, int qid, String aOption, AnswerType aType,String answeselect) {
+        answerSelected = answeselect;
 
         questionId = qid;
 
@@ -32,7 +33,7 @@ public class Mode {
         fdraw = draw;
 
         Type = qType;
-       // QAE = qae;
+        // QAE = qae;
 
     }
 

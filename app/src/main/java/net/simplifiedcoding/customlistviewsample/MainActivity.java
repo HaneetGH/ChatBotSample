@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     int i = 0;
 
     public ArrayList<Integer> imageid = new ArrayList<Integer>();
+    public ArrayList<String> ArrNextQuestion = new ArrayList<String>();
 
 
     public ArrayList<Integer> question = new ArrayList<Integer>();
@@ -53,13 +54,16 @@ public class MainActivity extends AppCompatActivity {
     private void databaseopen() {
         // TODO Auto-generated method stub
         boolean isDatabaseInitialized = Database.init(this);
+
         if (!isDatabaseInitialized) {
-            Toast.makeText(this, "Unable to Initialized Database" + isDatabaseInitialized,
-                    Toast.LENGTH_SHORT).show();
+
+           // Toast.makeText(this, "Unable to Initialized Database" + isDatabaseInitialized,
+
+              //      Toast.LENGTH_SHORT).show();
             return;
         } else {
-            Toast.makeText(this, "Done" + isDatabaseInitialized,
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Done" + isDatabaseInitialized,
+             //       Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //  obj = MessageType.Text;
 
-        //databaseopen();
+        databaseopen();
 
         headdbclass db = new headdbclass(getApplicationContext());
 
@@ -96,56 +100,70 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ArrRecever = db.FetchBasicQuestion();
         }
-        Log.d("AnswerTable", ArrOldAnswerRecever.size() + "-" + myLibrary.size());
+        try {
+            ArrNextQuestion = db.FetchNextQuestionId(ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).questionId, ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).answer);
 
-       ArrRecever = db.FetchNewQuestion(ArrOldAnswerRecever.get(ArrOldAnswerRecever.size()-1).questionId);
+            //ArrRecever = db.FetchNewQuestion(Integer.parseInt(ArrNextQuestion.get(1)));
+
+        } catch (Exception e) {
+
+        }
 
 
-        //ArrReceverForAnswers = db.FetchBasicQuestionAnswer();
-        Log.d("Type", "2");
 
-        Log.d("Type", "3");
 
         customList = new CustomList(MainActivity.this, myLibrary);
-        new CustomList(MainActivity.this, customList);
+        // new CustomList(MainActivity.this, customList);
         listView = (ListView) findViewById(R.id.listView);
 
         AnimationSet set = new AnimationSet(true);
+
         Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.out);
+
         animation1.setDuration(3000);
+
         set.addAnimation(animation1);
+
         LayoutAnimationController controller = new LayoutAnimationController(set, 2.0f);
 
         //listView.setLayoutAnimation(controller);
         listView.setAdapter(customList);
-        listView.setSelection(customList.getCount());
+        //listView.setSelection(listView.getCount());
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        //listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        //listView.scrollTo(0, listView.getHeight());
 
 
         delaycall();
 
 
-        //CustomList customList = new CustomList(this, names, desc, imageid,third,question,question2);
-        //customList = new CustomList(this, names, desc, imageid,third,question,question2);
 
 
-    }
-
-    public void GetQuestionAnswerOption(int questionId) {
 
     }
+
+
+
+
+
 
     public void delaycall() {
         if (i < ArrRecever.size()) {
 
             handler.postDelayed(new Runnable() {
+
                 @Override
                 public void run() {
+
                     myLibrary.add(ArrRecever.get(i));
 
                     customList.notifyDataSetChanged();
 
                     i++;
-                    time = time + 5000;
+
 
                     delaycall();
                 }
@@ -153,29 +171,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         } else {
-        /*handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                myLibrary.add(ArrRecever.get(i));
 
-                customList.notifyDataSetChanged();
-
-                i++;
-                time = time + 5000;
-
-                //delaycall();
-            }
-        }, 2000);*/
 
         }
-        //GetQuestionAnswerOption();
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         customList.notifyDataSetChanged();
+
+
+        //scrollMyListViewToBottom();
     }
 
 

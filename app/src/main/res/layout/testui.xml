@@ -13,7 +13,7 @@
     <TextView
         android:id="@+id/idfortext"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/out_message_bg"
         android:gravity="center"
         android:text="123"
