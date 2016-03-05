@@ -93,6 +93,7 @@ public class headdbclass extends SQLiteOpenHelper {
         //SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
         //Log.d("question-", res.getCount() + "");
         res.moveToFirst();
+
         while (res.isAfterLast() == false) {
             //Log.d("question", res.getString(res.getColumnIndex("ansString")));
 
