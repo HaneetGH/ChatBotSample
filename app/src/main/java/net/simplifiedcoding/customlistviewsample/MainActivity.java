@@ -24,32 +24,32 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
-    //    SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
     public ListView listView;
+
     public ArrayList<String> names = new ArrayList<String>();
+
     final Handler handler = new Handler();
-    public ArrayList<String> desc = new ArrayList<String>();
-    public ArrayList<String> third = new ArrayList<String>();
+
     int i = 0;
 
-    public ArrayList<Integer> imageid = new ArrayList<Integer>();
+
     public ArrayList<String> ArrNextQuestion = new ArrayList<String>();
 
 
-    public ArrayList<Integer> question = new ArrayList<Integer>();
-    public ArrayList<Integer> question2 = new ArrayList<Integer>();
+
     int time = 5000;
-    //Model[] Model = new Model[100];
+
+
     ArrayList<Mode> myLibrary = new ArrayList<>();
+
     ArrayList<Mode> ArrHelpingInsertingValuesToMainmyLibrary = new ArrayList<>();
+
     ArrayList<ansModel> ArrOldAnswerRecever = new ArrayList<>();
+
     ArrayList<Mode> ArrRecever = new ArrayList<>();
-    ArrayList<Mode> ArrReceverForAnswers = new ArrayList<>();
+
     CustomList customList;
-    //MessageType mt;
-
-
-    //MessageType obj;
 
     private void databaseopen() {
         // TODO Auto-generated method stub
@@ -71,11 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //  obj = MessageType.Text;
 
-        databaseopen();
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_main);
+
+
+        //databaseopen();
 
         headdbclass db = new headdbclass(getApplicationContext());
 
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             ArrNextQuestion = db.FetchNextQuestionId(ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).questionId, ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).answer);
 
-            //ArrRecever = db.FetchNewQuestion(Integer.parseInt(ArrNextQuestion.get(1)));
+            ArrRecever = db.FetchNewQuestion(Integer.parseInt(ArrNextQuestion.get(1)));
 
         } catch (Exception e) {
 
