@@ -13,13 +13,15 @@ public class Mode {
     String answerOption;
 
     AnswerType answerType;
-String answerSelected;
+
+    String answerSelected;
+
     int fdraw;
     // int QAE = -1;
     // DateTime LastReceive;
     MessageType Type;
 
-    public Mode(String s, MessageType qType, int draw, int qid, String aOption, AnswerType aType,String answeselect) {
+    public Mode(String s, MessageType qType, int draw, int qid, String aOption, AnswerType aType, String answeselect) {
         answerSelected = answeselect;
 
         questionId = qid;
