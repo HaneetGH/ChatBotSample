@@ -22,7 +22,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+{
+
     public static final String MyPREFERENCES = "MyPrefs";
 
     public ListView listView;
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //databaseopen();
+        databaseopen();
 
         headdbclass db = new headdbclass(getApplicationContext());
 
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                     myLibrary.add(ArrHelpingInsertingValuesToMainmyLibrary.get(cpuntInsertrr));
                 }
-                Log.d("Idss", myLibrary.size() + "");
+
 
 
             }
@@ -105,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             ArrNextQuestion = db.FetchNextQuestionId(ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).questionId, ArrOldAnswerRecever.get(ArrOldAnswerRecever.size() - 1).answer);
 
-            ArrRecever = db.FetchNewQuestion(Integer.parseInt(ArrNextQuestion.get(1)));
+           // ArrRecever = db.FetchNewQuestion(Integer.parseInt(ArrNextQuestion.get(1)));
 
         } catch (Exception e) {
 
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         customList.notifyDataSetChanged();
 
 
-        //scrollMyListViewToBottom();
+
     }
 
 

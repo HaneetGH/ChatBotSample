@@ -25,7 +25,7 @@ public class headdbclass extends SQLiteOpenHelper {
 
     public static final String QAE = "QAE";
 
-    // String question=null;
+
     private HashMap hp;
 
     ContentValues contentValues;
@@ -54,6 +54,7 @@ public class headdbclass extends SQLiteOpenHelper {
         ArrayList<Mode> BaseQuestionArray = new ArrayList<Mode>();
         
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where `Question_id`='0'", null);
 
         res.moveToFirst();
@@ -62,9 +63,9 @@ public class headdbclass extends SQLiteOpenHelper {
             e = MessageType.Text;
         }
         while (res.isAfterLast() == false) {
-            //Log.d("question", res.getString(res.getColumnIndex("Question")));
 
             BaseQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc, Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image,""));
+
             res.moveToNext();
 
 
@@ -86,16 +87,13 @@ public class headdbclass extends SQLiteOpenHelper {
         ArrayList<String> NextQuestionArray = new ArrayList<String>();
         
         SQLiteDatabase db = this.getReadableDatabase();
-        //Log.d("what", questionId + "" + s);
 
         Cursor res = db.rawQuery("SELECT * FROM Answer_Reply Where Question_id =" + questionId + " AND Answer ='" + s + "'", null);
 
-        //SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
-        //Log.d("question-", res.getCount() + "");
+
         res.moveToFirst();
 
         while (res.isAfterLast() == false) {
-            //Log.d("question", res.getString(res.getColumnIndex("ansString")));
 
 
             NextQuestionArray.add(res.getString(res.getColumnIndex("ansString")));
@@ -117,7 +115,7 @@ public class headdbclass extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        //Log.d("question_id", qid + "");
+
 
         Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where Question_id = " + qid + "", null);
 
@@ -131,7 +129,7 @@ public class headdbclass extends SQLiteOpenHelper {
             
         }
         while (res.isAfterLast() == false) {
-            //Log.d("question_id", res.getString(res.getColumnIndex("Question_id")));
+
 
             NextQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc, Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image,""));
             
@@ -140,7 +138,7 @@ public class headdbclass extends SQLiteOpenHelper {
 
         }
 
-        //Log.d("size", NextQuestionArray.size() + " ");
+
         
         return NextQuestionArray;
     }
@@ -149,7 +147,6 @@ public class headdbclass extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //Cursor res = db.execSQL("INSERT into `Answer_Table` (`Question_id`,`Answer_By_user`) Values('" + questionId + "','" + s + "')");
         db.execSQL("INSERT into `Answer_Table` (`Question_id`,`Answer_By_user`) Values('" + questionId + "','" + s + "')");
     }
 
@@ -163,18 +160,18 @@ public class headdbclass extends SQLiteOpenHelper {
 
         Cursor res = db.rawQuery("SELECT * FROM Answer_Table", null);
 
-        //SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
+
         res.moveToFirst();
 
         while (res.isAfterLast() == false) {
-            //Log.d("question_id", res.getString(res.getColumnIndex("Question_id")));
+
             NextQuestionArray.add(new ansModel(Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_By_user"))));
+
             res.moveToNext();
 
 
         }
 
-        //Log.d("size", NextQuestionArray.size() + " ");
         return NextQuestionArray;
     }
 
@@ -186,23 +183,23 @@ public class headdbclass extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        ////Log.d("question_id", qid + "");
+
         Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where Question_id = " + questionId + "", null);
 
-        //SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
         res.moveToFirst();
+
         if (res.getString(res.getColumnIndex("Question_Type")).equalsIgnoreCase("text")) {
+
             e = MessageType.Text;
+
         }
         while (res.isAfterLast() == false) {
-            //Log.d("question_id", res.getString(res.getColumnIndex("Question_id")));
             NextQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc, Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image,""));
             res.moveToNext();
 
 
         }
 
-        //Log.d("size", NextQuestionArray.size() + " ");
         return NextQuestionArray;
     }
 
@@ -213,16 +210,14 @@ public class headdbclass extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-        ////Log.d("question_id", qid + "");
+
         Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where Question_id = " + i + "", null);
 
-        //SELECT * FROM Answer_Reply Where Question_id = 0 AND Answer = 'Yes'
         res.moveToFirst();
         if (res.getString(res.getColumnIndex("Question_Type")).equalsIgnoreCase("text")) {
             e = MessageType.Text;
         }
         while (res.isAfterLast() == false) {
-            //Log.d("question_id", res.getString(res.getColumnIndex("Question_id")));
 
             NextQuestionArray.add(new Mode(res.getString(res.getColumnIndex("Question")), e, R.drawable.cnc, Integer.parseInt(res.getString(res.getColumnIndex("Question_id"))), res.getString(res.getColumnIndex("Answer_Option")), AnswerType.Image,""));
             res.moveToNext();
@@ -230,7 +225,62 @@ public class headdbclass extends SQLiteOpenHelper {
 
         }
 
-        //Log.d("size", NextQuestionArray.size() + " ");
+
         return NextQuestionArray;
+    }
+
+    public ArrayList<String> fetchQuestionAfterDelay(int qid) {
+
+        ArrayList<String> Qid = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor res = db.rawQuery("SELECT * FROM QuestionTable Where Question_id = " + qid + " AND Question = '1' "  , null);
+
+
+        res.moveToFirst();
+
+        if (res.getString(res.getColumnIndex("Question_Type")).equalsIgnoreCase("text")) {
+
+            e = MessageType.Text;
+
+        }
+        while (res.isAfterLast() == false) {
+
+            Qid.add(res.getString(res.getColumnIndex("Order")));
+
+            res.moveToNext();
+
+
+        }
+
+        return Qid;
+    }
+
+    public String getAnswerByUserFromAnswerTable(int questionId) {
+
+        ArrayList<String> Answer = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor res = db.rawQuery("SELECT * FROM Answer_Table Where Question_id = " + questionId + ""  , null);
+
+
+        res.moveToFirst();
+
+
+        while (res.isAfterLast() == false) {
+
+            Answer.add(res.getString(res.getColumnIndex("Answer_By_user")));
+
+            res.moveToNext();
+
+
+        }
+
+
+        return Answer.get(0).toString();
     }
 }

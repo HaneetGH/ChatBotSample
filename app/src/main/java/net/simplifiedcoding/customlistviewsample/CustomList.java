@@ -47,6 +47,19 @@ public class CustomList extends ArrayAdapter<Mode> {
 
     ArrayList<ansModel> ArrOldAnswerRecever = new ArrayList<>();
 
+    View listViewItem;
+
+    int helper = 0;
+
+
+    LayoutInflater inflater;
+
+    Mode model;
+
+    int pos;
+
+    TextView tvresult;
+
     public CustomList(MainActivity mainActivity, ArrayList<Mode> myLibrary) {
 
         super(mainActivity, 0, myLibrary);
@@ -56,24 +69,7 @@ public class CustomList extends ArrayAdapter<Mode> {
         context = mainActivity;
     }
 
-    /* public CuhjstomList(Activity context, String[] names, String[] desc, Integer[] imageid) {
-         super(context, R.layout.list_layout, names);
-         this.context = context;
-         this.names = names;
-         this.desc = desc;
-         this.imageid = imageid;
 
-     }*/
-    View listViewItem;
-
-    int helper = 0;
-
-
-    LayoutInflater inflater;
-
-    Mode model;
-    int pos;
-    TextView tvresult;
     @Override
     public View getView(int position, final View convertView, ViewGroup parent) {
 
@@ -114,6 +110,9 @@ public class CustomList extends ArrayAdapter<Mode> {
                 TextView tv = (TextView) listViewItem.findViewById(R.id.idfortext);
 
                 tv.setText(model.question);
+
+
+
 
                 // //tvresult.setText("You Selected:" + str[0]);
                 MainActivity mn = new MainActivity();
@@ -185,6 +184,26 @@ public class CustomList extends ArrayAdapter<Mode> {
 
         //selectedAse="";
         listViewItem = inflater.inflate(R.layout.answer_ui, null, true);
+
+
+        try {
+
+            TextView answer = (TextView) listViewItem.findViewById(R.id.idforresultshow);
+
+            answer.setVisibility(View.GONE);
+            headdbclass db = new headdbclass(getContext());
+            String answerbyuser = db.getAnswerByUserFromAnswerTable(model.questionId);
+
+            answer.setVisibility(View.VISIBLE);
+            answer.setText("You Answer: "+answerbyuser);
+            Log.d("Answer", answerbyuser + "");
+
+
+        }
+        catch (Exception e)
+        {
+
+        }
         //TextView tvresult = (TextView) listViewItem.findViewById(R.id.idforresultshow);
 
         final TextView aOptionOne = (TextView) listViewItem.findViewById(R.id.idforone);
@@ -225,35 +244,31 @@ public class CustomList extends ArrayAdapter<Mode> {
         }
 
 
-
-
 ///-------------------------Buttons Click Events For Answer Start-------------------------------///
         aOptionOne.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+
+
                 aOptionOne.setSelected(true);
-                //aOptionOne.setBackgroundResource(R.color.primary_text_default_material_dark);
-                //tvresult.setText("You Reply:"+str[0]);
+
                 headdbclass db = new headdbclass(getContext());
-//                NextQuestionArr.clear();
+
                 try {
-                    //selectedAse=str[0];
+
                     sQuestions.add(str[0]);
+
                     db.EnterQuestionAnswerToDb(myLibraryModel.get(position).questionId, str[0]);
 
 
-                    Log.d("INSERT in db", myLibraryModel.get(position).questionId + str[0]);
-
                     NextQuestionArr = new ArrayList<String>();
-                    Log.d("-->size", myLibraryModel.get(position).questionId + "|" + str[0]);
+
                     NextQuestionArr = db.FetchNextQuestionId(myLibraryModel.get(position).questionId, str[0]);
 
-                    //NextQuestionArr=db.FetchNextQuestionId(model.questionId,str[1]);
+
                     MessageType e = MessageType.Text;
-//                Toast.makeText(context,NextQuestionArr.size(),Toast.LENGTH_LONG).show();
-                    Log.d("-->size", NextQuestionArr.size() + "");
-                    Log.d("-->size", NextQuestionArr.size() + " " + Integer.parseInt(NextQuestionArr.get(1)));
+//
 
                     if (NextQuestionArr.size() == 0) {
 
@@ -262,13 +277,17 @@ public class CustomList extends ArrayAdapter<Mode> {
                         if (NextQuestionArr.get(0).equalsIgnoreCase(" ")) {
 
                         } else {
-                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image,""));
+
+
+                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image, ""));
+
                             notifyDataSetChanged();
+
                         }
 
                     }
                     try {
-                        //model.questionId = Integer.parseInt(NextQuestionArr.get(1));
+
                         nextQuestionCallMethod(NextQuestionArr.get(1));
 
                     } catch (Exception ee) {
@@ -287,10 +306,10 @@ public class CustomList extends ArrayAdapter<Mode> {
             public void onClick(View v) {
 
                 Log.d("-->", myLibraryModel.get(position).questionId + "");
-                // TextView tvresult = (TextView) listViewItem.findViewById(R.id.idforresultshow);
-                ////tvresult.setText("You Selected:" + str[1]);
+
+
                 headdbclass db = new headdbclass(getContext());
-                // NextQuestionArr.clear();
+
                 try {
                     sQuestions.add(str[1]);
                     db.EnterQuestionAnswerToDb(myLibraryModel.get(position).questionId, str[1]);
@@ -301,9 +320,7 @@ public class CustomList extends ArrayAdapter<Mode> {
                     NextQuestionArr = db.FetchNextQuestionId(myLibraryModel.get(position).questionId, str[1]);
 
                     MessageType e = MessageType.Text;
-//                Toast.makeText(context,NextQuestionArr.size(),Toast.LENGTH_LONG).show();
-                    //  Log.d("-->", NextQuestionArr.size() + "");
-//                Log.d("-->", NextQuestionArr.get(0) + "");
+//
 
                     notifyDataSetChanged();
 
@@ -313,12 +330,12 @@ public class CustomList extends ArrayAdapter<Mode> {
                         if (NextQuestionArr.get(0).equalsIgnoreCase(" ")) {
 
                         } else {
-                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image,""));
+                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image, ""));
 
                             notifyDataSetChanged();
                         }
                         try {
-                            // model.questionId = Integer.parseInt(NextQuestionArr.get(1));
+
 
                             nextQuestionCallMethod(NextQuestionArr.get(1));
 
@@ -344,26 +361,28 @@ public class CustomList extends ArrayAdapter<Mode> {
             public void onClick(View v) {
                 //tvresult.setText("You Reply:"+str[2]);
                 Log.d("-->", myLibraryModel.get(position).questionId + "");
+
                 aOptionThree.setSelected(true);
+
                 headdbclass db = new headdbclass(getContext());
 
-                // //tvresult.setText("You Selected:" + str[2]);
-                // NextQuestionArr.clear();
+
                 sQuestions.add(str[2]);
-                Log.d("Values", "|" + myLibraryModel.get(position).questionId + "|" + str[2]);
+
+
                 try {
+
                     db.EnterQuestionAnswerToDb(myLibraryModel.get(position).questionId, str[2]);
+
                     Log.d("Values in try", "|" + myLibraryModel.get(position).questionId + "|" + str[2]);
 
 
                     NextQuestionArr = new ArrayList<String>();
-                    Log.d("321", "|" + myLibraryModel.get(position).questionId + "|" + str[2]);
+
                     NextQuestionArr = db.FetchNextQuestionId(myLibraryModel.get(position).questionId, str[2]);
-                    Log.d("321", NextQuestionArr.size() + " ");
+
                     MessageType e = MessageType.Text;
-//                Toast.makeText(context,NextQuestionArr.size(),Toast.LENGTH_LONG).show();
-                    Log.d("--> size", NextQuestionArr.size() + " ");
-//                Log.d("-->", NextQuestionArr.get(0) + "");
+//
 
 
                     if (NextQuestionArr.size() == 0) {
@@ -373,14 +392,14 @@ public class CustomList extends ArrayAdapter<Mode> {
                         if (NextQuestionArr.get(0).equalsIgnoreCase(" ")) {
 
                         } else {
-                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image,""));
+                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image, ""));
                             notifyDataSetChanged();
                         }
                         try {
-                            //model.questionId = Integer.parseInt(NextQuestionArr.get(1));
-                            Log.d("va", NextQuestionArr.get(1));
+
+
                             nextQuestionCallMethod(NextQuestionArr.get(1));
-                            Log.d("va", NextQuestionArr.get(1));
+
 
                         } catch (Exception ee) {
 
@@ -403,12 +422,9 @@ public class CustomList extends ArrayAdapter<Mode> {
 
             @Override
             public void onClick(View v) {
-                //tvresult.setText("You Reply:"+str[3]);
-                Log.d("-->", myLibraryModel.get(position).questionId + "");
-                //TextView tvresult = (TextView) listViewItem.findViewById(R.id.idforresultshow);
-                ////tvresult.setText("You Selected:" + str[3]);
+
                 headdbclass db = new headdbclass(getContext());
-                // NextQuestionArr.clear();
+
                 try {
                     db.EnterQuestionAnswerToDb(myLibraryModel.get(position).questionId, str[3]);
 
@@ -418,25 +434,25 @@ public class CustomList extends ArrayAdapter<Mode> {
                     NextQuestionArr = db.FetchNextQuestionId(myLibraryModel.get(position).questionId, str[3]);
 
                     MessageType e = MessageType.Text;
-//                Toast.makeText(context,NextQuestionArr.size(),Toast.LENGTH_LONG).show();
-                    //  Log.d("-->", NextQuestionArr.size() + "");
-//                Log.d("-->", NextQuestionArr.get(0) + "");
 
                     notifyDataSetChanged();
+
                     sQuestions.add(str[3]);
+
                     if (NextQuestionArr.size() == 0) {
 
                     } else {
+
                         if (NextQuestionArr.get(0).equalsIgnoreCase(" ")) {
 
                         } else {
 
-                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image,""));
+                            myLibraryModel.add(new Mode(NextQuestionArr.get(0), e, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image, ""));
 
                             notifyDataSetChanged();
                         }
                         try {
-                            //model.questionId = Integer.parseInt(NextQuestionArr.get(1));
+
 
                             nextQuestionCallMethod(NextQuestionArr.get(1));
 
@@ -452,10 +468,11 @@ public class CustomList extends ArrayAdapter<Mode> {
                 }
             }
         });
-        // Log.d("qSize", sQuestions.size() + "");
+
 ///-------------------------Buttons Click Events For Answer End-------------------------------///
 
     }
+
 
     public void nextQuestionCallMethod(String Qid) {
 
@@ -463,23 +480,42 @@ public class CustomList extends ArrayAdapter<Mode> {
 
         headdbclass db = new headdbclass(getContext());
 
-        Log.d("qid", Qid + "");
 
         NextQuestionData = new ArrayList<Mode>();
 
-        NextQuestionData = db.FetchNextQuestionFromBaseTable(Qid);
-        Log.d("valuess", NextQuestionData.get(nQuestionCounter).questionId + "");
+        if (Qid.equalsIgnoreCase("-1")) {
+
+            myLibraryModel.add(new Mode("End Of Day One", MessageType.Text, R.drawable.cnc, Integer.parseInt(NextQuestionArr.get(1)), model.answerOption, AnswerType.Image, ""));
+
+            notifyDataSetChanged();
+
+            Log.d("OQID", myLibraryModel.get(myLibraryModel.size() - 2).questionId + "");
+
+            ArrayList<String> QQid = db.fetchQuestionAfterDelay(myLibraryModel.get(myLibraryModel.size() - 1).questionId);
+
+            NextQuestionData = db.FetchNextQuestionFromBaseTable(QQid.get(0));
+
+            delaycall();
+
+        } else {
 
 
-        delaycall();
+            NextQuestionData = db.FetchNextQuestionFromBaseTable(Qid);
+
+            delaycall();
+
+        }
 
     }
 
+
     int nQuestionCounter = 0;
+
 
     public void delaycall() {
 
         if (nQuestionCounter < NextQuestionData.size()) {
+
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -487,17 +523,17 @@ public class CustomList extends ArrayAdapter<Mode> {
                     myLibraryModel.add(NextQuestionData.get(nQuestionCounter));
 
                     notifyDataSetChanged();
+
                     nQuestionCounter++;
 
                     delaycall();
                 }
             }, 1000);
 
-            //delaycall();
 
         }
     }
-    //GetQuestionAnswerOption();
+
 
 }
 
